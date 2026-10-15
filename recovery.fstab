@@ -7,6 +7,16 @@ vendor                                                  /vendor                e
 odm                                                     /odm                   erofs   ro                                                 wait,slotselect,logical,first_stage_mount
 system_dlkm                                             /system_dlkm           erofs   ro                                                 wait,slotselect,avb=vbmeta,logical,first_stage_mount
 vendor_dlkm                                             /vendor_dlkm           erofs   ro                                                 wait,slotselect,avb=vbmeta,logical,first_stage_mount
+my_product                                              /my_product            erofs   ro                                                 wait,slotselect,logical,first_stage_mount
+my_company                                              /my_company            erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_carrier                                              /my_carrier            erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_region                                               /my_region             erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_heytap                                               /my_heytap             erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_stock                                                /my_stock              erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_preload                                              /my_preload            erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_manifest                                             /my_manifest           erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
+my_engineering                                          /my_engineering        erofs   ro                                                 wait,slotselect,logical,first_stage_mount
+my_bigball                                              /my_bigball            erofs   ro                                                 wait,slotselect,logical,first_stage_mount,nofail
 
 # Fallback ext4 support for dynamic partitions
 system                                                  /system                ext4    ro,barrier=1,discard                               wait,slotselect,avb=vbmeta_system,logical,first_stage_mount
@@ -16,6 +26,16 @@ vendor                                                  /vendor                e
 odm                                                     /odm                   ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount
 system_dlkm                                             /system_dlkm           ext4    ro,barrier=1,discard                               wait,slotselect,avb=vbmeta,logical,first_stage_mount
 vendor_dlkm                                             /vendor_dlkm           ext4    ro,barrier=1,discard                               wait,slotselect,avb=vbmeta,logical,first_stage_mount
+my_product                                              /my_product            ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount
+my_company                                              /my_company            ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_carrier                                              /my_carrier            ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_region                                               /my_region             ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_heytap                                               /my_heytap             ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_stock                                                /my_stock              ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_preload                                              /my_preload            ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_manifest                                             /my_manifest           ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
+my_engineering                                          /my_engineering        ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount
+my_bigball                                              /my_bigball            ext4    ro,barrier=1,discard                               wait,slotselect,logical,first_stage_mount,nofail
 
 # Metadata & Userdata
 /dev/block/by-name/metadata                             /metadata              f2fs    noatime,nosuid,nodev,discard                       wait,check,formattable,first_stage_mount

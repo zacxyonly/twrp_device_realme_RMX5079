@@ -72,7 +72,17 @@ BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     vendor \
     vendor_dlkm \
     system_dlkm \
-    odm
+    odm \
+    my_product \
+    my_company \
+    my_carrier \
+    my_region \
+    my_heytap \
+    my_stock \
+    my_preload \
+    my_manifest \
+    my_engineering \
+    my_bigball
 
 # Encryption
 TW_INCLUDE_CRYPTO := true
@@ -90,6 +100,8 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_NO_SCREEN_TIMEOUT := true
 TW_NO_EXFAT_FUSE := true
+TW_HAS_MTP := true
+TW_DEFAULT_EXTERNAL_STORAGE := true
 
 # Brightness control
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"

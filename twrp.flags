@@ -19,7 +19,12 @@
 /vendor_image   emmc    /dev/block/bootdevice/by-name/vendor            flags=display="Vendor Image";backup=1;flashimg=1
 /product_image  emmc    /dev/block/bootdevice/by-name/product           flags=display="Product Image";backup=1;flashimg=1
 /odm_image      emmc    /dev/block/bootdevice/by-name/odm               flags=display="ODM Image";backup=1;flashimg=1
+/my_product_image     emmc    /dev/block/bootdevice/by-name/my_product       flags=display="My Product Image";backup=1;flashimg=1
+/my_engineering_image emmc    /dev/block/bootdevice/by-name/my_engineering   flags=display="My Engineering Image";backup=1;flashimg=1
 
-# Modem & EFS
+# Modem, Cache & EFS
 /modem          emmc    /dev/block/bootdevice/by-name/modem             flags=display="Modem (Firmware)";backup=1;slotselect
+/modem_st1      emmc    /dev/block/bootdevice/by-name/modem_st1         flags=display="EFS (Modem ST1)";backup=1
+/modem_st2      emmc    /dev/block/bootdevice/by-name/modem_st2         flags=display="EFS (Modem ST2)";backup=1
 /persist        ext4    /dev/block/bootdevice/by-name/persist           flags=display="Persist";backup=1
+/cache          ext4    /dev/block/bootdevice/by-name/oplusreserve2     flags=display="Cache / Oplus Reserve";backup=1

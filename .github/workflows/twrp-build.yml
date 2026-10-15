@@ -19,6 +19,8 @@ jobs:
   build:
     name: Build TWRP Recovery
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
 
     steps:
     - name: Cleanup Runner Disk Space
@@ -101,3 +103,42 @@ jobs:
         name: TWRP-RMX5079-Output
         path: output/*
         if-no-files-found: warn
+
+    - name: Generate Checksums & Release Tag
+      id: release_info
+      run: |
+        cd $GITHUB_WORKSPACE/output
+        sha256sum *.img > sha256.txt || true
+        TAG="v$(date +'%Y.%m.%d-%H%M')"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+        echo "date=$(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+
+    - name: Publish GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.release_info.outputs.tag }}
+        name: TWRP Recovery RMX5079 - ${{ steps.release_info.outputs.date }}
+        draft: false
+        prerelease: false
+        body: |
+          ## 📱 TWRP Recovery for Realme (RMX5079)
+          
+          **Target Device:** Realme RMX5079 (Snapdragon 6 Gen 1 / volcano)  
+          **Android Base:** Android 14 (AOSP SDK 34)  
+          **Build Date:** ${{ steps.release_info.outputs.date }}  
+          
+          ---
+          ### 📦 File & Checksum:
+          Lihat file `sha256.txt` untuk memastikan keutuhan file hasil download.
+          
+          ---
+          ### 🚀 Panduan Flashing:
+          ```bash
+          adb reboot bootloader
+          fastboot flash recovery recovery.img
+          fastboot reboot recovery
+          ```
+        files: |
+          output/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
