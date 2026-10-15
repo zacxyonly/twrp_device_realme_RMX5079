@@ -1,0 +1,17 @@
+on early-init
+    insmod /vendor/lib/modules/smem.ko
+    insmod /vendor/lib/modules/boot_mode.ko
+    insmod /vendor/lib/modules/buildvariant.ko
+    insmod /vendor/lib/modules/oplusboot.ko
+    insmod /vendor/lib/modules/device_info.ko
+    insmod /vendor/lib/modules/oplus_bsp_tp_notify.ko
+    insmod /vendor/lib/modules/oplus_bsp_tp_custom.ko
+    insmod /vendor/lib/modules/oplus_bsp_tp_common.ko
+    insmod /vendor/lib/modules/oplus_bsp_synaptics_tcm2.ko
+
+on init
+    setprop sys.usb.configfs 1
+
+on fs
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
