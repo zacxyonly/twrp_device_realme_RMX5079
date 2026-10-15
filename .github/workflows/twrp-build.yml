@@ -1,11 +1,23 @@
-name: Build TWRP for Realme P3 5G (RMX5079)
+name: Build TWRP Recovery
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+    inputs:
+      twrp_branch:
+        description: 'TWRP Manifest Branch'
+        required: true
+        default: 'twrp-14'
+        type: choice
+        options:
+          - twrp-14
+          - twrp-12.1
 
 jobs:
   build:
-    name: Build TWRP Recovery
+    name: Build TWRP
     runs-on: ubuntu-22.04
 
     steps:
@@ -26,7 +38,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
-          libc6-dev-i386 libncurses5 x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
+          libc6-dev-i386 libncurses5 libncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
           libxml2 libxml2-utils xsltproc unzip fontconfig python3 rsync
 
     - name: Install Repo Tool
@@ -42,7 +54,8 @@ jobs:
         cd ~/twrp
         git config --global user.name "Builder"
         git config --global user.email "builder@github.com"
-        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
+        BRANCH="${{ github.event.inputs.twrp_branch || 'twrp-14' }}"
+        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b $BRANCH
         repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
 
     - name: Copy Device Tree to Manifest
@@ -55,10 +68,11 @@ jobs:
         cd ~/twrp
         source build/envsetup.sh
         lunch twrp_RMX5079-eng || lunch twrp_RMX5079-userdebug
-        mka recoveryimage -j$(nproc --all)
+        mka recoveryimage -j$(nproc --all) || mka bootimage -j$(nproc --all)
 
-    - name: Upload Recovery Artifact
+    - name: Upload Recovery Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: TWRP-RMX5079-Recovery
-        path: ~/twrp/out/target/product/RMX5079/recovery.img
+        name: TWRP-RMX5079-Output
+        path: |
+          ~/twrp/out/target/product/RMX5079/*.img
