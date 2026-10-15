@@ -80,6 +80,11 @@ jobs:
         echo "=== Lunching Target ==="
         lunch twrp_RMX5079-eng || lunch omni_RMX5079-eng || lunch twrp_RMX5079-userdebug
         
+        echo "=== Pre-populating DTB image ==="
+        mkdir -p out/target/product/RMX5079
+        cp -vf device/realme/RMX5079/prebuilt/dtb out/target/product/RMX5079/dtb.img || true
+        cp -vf device/realme/RMX5079/prebuilt/dtb out/target/product/RMX5079/dtb || true
+        
         echo "=== Building Recovery Image ==="
         make recoveryimage -j$(nproc --all) || make bootimage -j$(nproc --all)
         
