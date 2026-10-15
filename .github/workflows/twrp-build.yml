@@ -39,7 +39,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
           libc6-dev-i386 libncurses5 libncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
-          libxml2 libxml2-utils xsltproc unzip fontconfig python3 rsync bc ccache
+          libxml2 libxml2-utils xsltproc unzip fontconfig python3 python-is-python3 rsync bc ccache \
+          schedtool lzop libssl-dev openjdk-11-jdk
+        sudo ln -sf /usr/bin/python3 /usr/bin/python || true
 
     - name: Install Repo Tool
       run: |
@@ -55,7 +57,6 @@ jobs:
         git config --global user.name "Builder"
         git config --global user.email "builder@github.com"
         
-        # Default to twrp-12.1 for stability and lightweight sync
         BRANCH="twrp-12.1"
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
           BRANCH="${{ github.event.inputs.twrp_branch }}"
@@ -75,12 +76,23 @@ jobs:
         cd ~/twrp
         export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
+        
+        echo "=== Lunching Target ==="
         lunch twrp_RMX5079-eng || lunch twrp_RMX5079-userdebug
-        mka recoveryimage -j$(nproc --all) || mka bootimage -j$(nproc --all)
+        
+        echo "=== Building Recovery Image ==="
+        make recoveryimage -j$(nproc --all) || make bootimage -j$(nproc --all)
+        
+        echo "=== Collecting Output Images ==="
+        mkdir -p $GITHUB_WORKSPACE/output
+        find out/target/product/ -type f -name "*.img" -exec cp -v {} $GITHUB_WORKSPACE/output/ \;
+        
+        echo "=== Output Files in Workspace ==="
+        ls -la $GITHUB_WORKSPACE/output/
 
     - name: Upload Recovery Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: TWRP-RMX5079-Output
-        path: |
-          ~/twrp/out/target/product/RMX5079/*.img
+        path: output/*
+        if-no-files-found: warn
