@@ -9,37 +9,37 @@ on:
       twrp_branch:
         description: 'TWRP Manifest Branch'
         required: true
-        default: 'twrp-14'
+        default: 'twrp-12.1'
         type: choice
         options:
-          - twrp-14
           - twrp-12.1
+          - twrp-14
 
 jobs:
   build:
-    name: Build TWRP
+    name: Build TWRP Recovery
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Cleanup Runner Disk Space
+      uses: rokibhasansagar/slimhub_actions@main
+
+    - name: Setup Swap Space
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 12
+
     - name: Checkout Device Tree
       uses: actions/checkout@v4
       with:
         path: device/realme/RMX5079
 
-    - name: Free Disk Space
-      run: |
-        sudo rm -rf /usr/share/dotnet /etc/mysql /var/lib/mysql
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /opt/ghc
-        sudo apt-get clean
-        df -h
-
-    - name: Setup Build Environment
+    - name: Setup Build Packages
       run: |
         sudo apt-get update
         sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
           libc6-dev-i386 libncurses5 libncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
-          libxml2 libxml2-utils xsltproc unzip fontconfig python3 rsync
+          libxml2 libxml2-utils xsltproc unzip fontconfig python3 rsync bc ccache
 
     - name: Install Repo Tool
       run: |
@@ -48,24 +48,32 @@ jobs:
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
 
-    - name: Initialize TWRP Manifest
+    - name: Initialize and Sync TWRP Manifest
       run: |
         mkdir -p ~/twrp
         cd ~/twrp
         git config --global user.name "Builder"
         git config --global user.email "builder@github.com"
-        BRANCH="${{ github.event.inputs.twrp_branch || 'twrp-14' }}"
+        
+        # Default to twrp-12.1 for stability and lightweight sync
+        BRANCH="twrp-12.1"
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          BRANCH="${{ github.event.inputs.twrp_branch }}"
+        fi
+        echo "Using TWRP branch: $BRANCH"
+        
         repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b $BRANCH
-        repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
 
     - name: Copy Device Tree to Manifest
       run: |
         mkdir -p ~/twrp/device/realme
         cp -r device/realme/RMX5079 ~/twrp/device/realme/
 
-    - name: Build TWRP
+    - name: Build TWRP Recovery
       run: |
         cd ~/twrp
+        export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
         lunch twrp_RMX5079-eng || lunch twrp_RMX5079-userdebug
         mka recoveryimage -j$(nproc --all) || mka bootimage -j$(nproc --all)
