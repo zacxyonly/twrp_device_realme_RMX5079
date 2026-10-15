@@ -51,6 +51,7 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 201326592
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 201326592
 BOARD_HAS_NO_REAL_SDCARD := true
 BOARD_USES_RECOVERY_AS_BOOT := false
+BOARD_USES_METADATA_PARTITION := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 
@@ -93,4 +94,4 @@ TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 1024
 
 # Vendor Kernel Modules
-TW_LOAD_VENDOR_MODULES := "oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_notify.ko device_info.ko boot_mode.ko smem.ko oplusboot.ko buildvariant.ko"
+TW_LOAD_VENDOR_MODULES := oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_notify.ko device_info.ko boot_mode.ko smem.ko oplusboot.ko buildvariant.ko

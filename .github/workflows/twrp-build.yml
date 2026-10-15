@@ -78,7 +78,7 @@ jobs:
         source build/envsetup.sh
         
         echo "=== Lunching Target ==="
-        lunch twrp_RMX5079-eng || lunch twrp_RMX5079-userdebug
+        lunch twrp_RMX5079-eng || lunch omni_RMX5079-eng || lunch twrp_RMX5079-userdebug
         
         echo "=== Building Recovery Image ==="
         make recoveryimage -j$(nproc --all) || make bootimage -j$(nproc --all)

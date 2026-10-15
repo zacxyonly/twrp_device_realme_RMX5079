@@ -20,10 +20,5 @@ PRODUCT_PACKAGES += \
     checkpoint_gc \
     otapreopt_script
 
-# Recovery fstab
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab
-
-# Ramdisk & modules
-PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,$(TARGET_COPY_OUT_RECOVERY)/root)
+# Recovery dependencies are handled automatically by TWRP build system
+# via TARGET_RECOVERY_FSTAB and device/realme/RMX5079/recovery/root
