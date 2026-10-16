@@ -4,6 +4,7 @@
 #
 
 LOCAL_PATH := device/realme/RMX5079
+DEVICE_PATH := device/realme/RMX5079
 
 # Build standalone recovery image
 PRODUCT_BUILD_RECOVERY_IMAGE := true
@@ -23,8 +24,8 @@ PRODUCT_PACKAGES += \
     checkpoint_gc \
     otapreopt_script
 
-# Recovery dependencies are handled automatically by TWRP build system
-# via TARGET_RECOVERY_FSTAB and device/realme/RMX5079/recovery/root
+# Recovery dependencies
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/twrp.flags:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/twrp.flags
+    $(DEVICE_PATH)/recovery/root/system/etc/twrp.flags:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/twrp.flags
+
 
