@@ -9,11 +9,12 @@ on:
       twrp_branch:
         description: 'TWRP Manifest Branch'
         required: true
-        default: 'twrp-14'
+        default: 'twrp-12.1'
         type: choice
         options:
-          - twrp-14
           - twrp-12.1
+          - twrp-14.1
+          - twrp-14
 
 jobs:
   build:
@@ -59,8 +60,8 @@ jobs:
         git config --global user.name "Builder"
         git config --global user.email "builder@github.com"
 
-        # Default ke twrp-14 karena device berbasis Android 14
-        BRANCH="twrp-14"
+        # Default ke twrp-12.1 (rekomendasi TWRP upstream untuk stabilitas & kompatibilitas kernel 6.x/boot v4)
+        BRANCH="twrp-12.1"
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
           BRANCH="${{ github.event.inputs.twrp_branch }}"
         fi
@@ -81,10 +82,19 @@ jobs:
         export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
 
-        echo "=== Lunching Target ==="
-        BRANCH="${TWRP_BRANCH:-twrp-14}"
+        BRANCH="${TWRP_BRANCH:-twrp-12.1}"
+        echo "=== Lunching Target (Branch: $BRANCH) ==="
         if [ "$BRANCH" = "twrp-14" ] || [ "$BRANCH" = "twrp-14.1" ]; then
-          lunch twrp_RMX5079-trunk_staging-eng || lunch omni_RMX5079-trunk_staging-eng
+          # Fix missing build/release on twrp-14 minimal manifest
+          if [ ! -d build/release ]; then
+            echo "build/release not found in manifest; cloning AOSP build/release..."
+            git clone --depth=1 -b android-14.0.0_r67 https://android.googlesource.com/platform/build/release build/release || true
+          fi
+          # Prevent dumpvars fatal abort if release configs are missing
+          if [ -f build/make/core/release_config.mk ]; then
+            sed -i 's/\$(error No release config found for TARGET_RELEASE/\$(warning No release config found for TARGET_RELEASE/g' build/make/core/release_config.mk
+          fi
+          lunch twrp_RMX5079-ap2a-eng || lunch twrp_RMX5079-trunk_staging-eng || lunch omni_RMX5079-ap2a-eng || lunch twrp_RMX5079-eng || lunch omni_RMX5079-eng
         else
           lunch twrp_RMX5079-eng || lunch omni_RMX5079-eng
         fi
