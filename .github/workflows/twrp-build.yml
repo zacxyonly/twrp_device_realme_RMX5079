@@ -144,7 +144,7 @@ jobs:
         body: |
           ## 📱 TWRP Recovery for Realme (RMX5079)
 
-          **Target Device:** Realme P3 5G / RMX5079 (Qualcomm SM6650 / volcano)
+          **Target Device:** Realme P3 5G / RMX5079 / RMX5070 (Qualcomm Snapdragon 6 Gen 4 SM6650 / volcano)
           **Android Base:** Android 14 (AOSP SDK 34)
           **Build Date:** ${{ steps.release_info.outputs.date }}
 

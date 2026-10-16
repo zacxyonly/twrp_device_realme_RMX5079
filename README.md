@@ -4,7 +4,7 @@
 
 ![TWRP Logo](https://img.shields.io/badge/TWRP-Recovery_v3.7+-blue?style=for-the-badge&logo=android)
 ![Android Version](https://img.shields.io/badge/Android-14_(SDK_34)-green?style=for-the-badge&logo=android)
-![SoC](https://img.shields.io/badge/SoC-Qualcomm_Snapdragon_6s_Gen_3_(SM6650)-orange?style=for-the-badge&logo=qualcomm)
+![SoC](https://img.shields.io/badge/SoC-Qualcomm_Snapdragon_6_Gen_4_(SM6650)-orange?style=for-the-badge&logo=qualcomm)
 ![Status](https://img.shields.io/badge/Status-Beta_Testing-yellow?style=for-the-badge)
 [![Build TWRP Recovery](https://github.com/zacxyonly/twrp_device_realme_RMX5079/actions/workflows/twrp-build.yml/badge.svg)](https://github.com/zacxyonly/twrp_device_realme_RMX5079/actions/workflows/twrp-build.yml)
 
@@ -28,17 +28,17 @@
 
 | Specification | Details |
 | :--- | :--- |
-| **Device Model** | Realme P3 5G (`RMX5079`) |
+| **Device Model** | Realme P3 5G (`RMX5079` / `RMX5070`) |
 | **Manufacturer** | Realme / OPLUS |
-| **Chipset / SoC** | Qualcomm SM6650 ("volcano") - Snapdragon 6s Gen 3 |
-| **CPU Architecture** | ARM64 (`arm64-v8a`), Octa-core Kryo (2x A76 + 6x A55) |
-| **Kernel Version** | Linux 6.1.75 GKI (Stock extracted) |
+| **Chipset / SoC** | Qualcomm SM6650 ("volcano") - Snapdragon 6 Gen 4 |
+| **CPU Architecture** | ARM64 (`arm64-v8a`), Octa-core (4x Cortex-A720 + 4x Cortex-A520) |
+| **Kernel Version** | Linux 6.1.75-android14 GKI (Stock extracted) |
 | **Boot Header** | Version 4 |
 | **Partition Layout** | Virtual A/B (Dynamic Partitions: erofs / f2fs / ext4) |
 | **Display Resolution** | 1080 x 2400 pixels (~20:9 aspect ratio) |
 | **Touchscreen Panel** | FocalTech FT3518 / Novatek / Goodix / Synaptics |
 | **Encryption Method** | File-Based Encryption (FBE v2) with WrappedKey |
-| **Stock OS Base** | Realme UI 5.0 (Android 14, API Level 34) |
+| **Stock OS Base** | Realme UI (Android 14, API Level 34 - Stock Extracted) |
 
 ---
 
