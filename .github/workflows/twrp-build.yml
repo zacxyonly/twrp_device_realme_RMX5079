@@ -90,9 +90,18 @@ jobs:
         echo "=== Building Recovery Image ==="
         make recoveryimage -j$(nproc --all) || make bootimage -j$(nproc --all)
         
-        echo "=== Collecting Output Images ==="
+        echo "=== Collecting Output Recovery Image ==="
         mkdir -p $GITHUB_WORKSPACE/output
-        find out/target/product/ -type f -name "*.img" -exec cp -v {} $GITHUB_WORKSPACE/output/ \;
+        if [ -f out/target/product/RMX5079/recovery.img ]; then
+          echo "Found recovery.img!"
+          cp -vf out/target/product/RMX5079/recovery.img $GITHUB_WORKSPACE/output/
+        elif [ -f out/target/product/RMX5079/boot.img ]; then
+          echo "Fallback: recovery.img not found, copying boot.img"
+          cp -vf out/target/product/RMX5079/boot.img $GITHUB_WORKSPACE/output/
+        else
+          echo "Looking for recovery image in out/target/product/..."
+          find out/target/product/ -maxdepth 2 -name "recovery.img" -exec cp -vf {} $GITHUB_WORKSPACE/output/ \;
+        fi
         
         echo "=== Output Files in Workspace ==="
         ls -la $GITHUB_WORKSPACE/output/
