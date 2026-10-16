@@ -109,4 +109,4 @@ TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 1024
 
 # Vendor Kernel Modules
-TW_LOAD_VENDOR_MODULES := oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_notify.ko device_info.ko boot_mode.ko smem.ko oplusboot.ko buildvariant.ko
+TW_LOAD_VENDOR_MODULES := "oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_notify.ko device_info.ko boot_mode.ko smem.ko oplusboot.ko buildvariant.ko"
