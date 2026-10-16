@@ -10,7 +10,7 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := kryo300
+TARGET_CPU_VARIANT := cortex-a76
 TARGET_CPU_VARIANT_RUNTIME := cortex-a76
 
 TARGET_2ND_ARCH := arm
@@ -53,7 +53,7 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 201326592
 BOARD_DTBOIMG_PARTITION_SIZE := 25165824
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-BOARD_HAS_NO_REAL_SDCARD := true
+BOARD_HAS_NO_REAL_SDCARD := false
 BOARD_USES_RECOVERY_AS_BOOT := false
 TARGET_NO_RECOVERY := false
 BOARD_USES_METADATA_PARTITION := true
@@ -123,16 +123,24 @@ TW_DEFAULT_BRIGHTNESS := 1024
 
 # Vendor Kernel Modules
 # TW_LOAD_VENDOR_MODULES: loaded by TWRP at runtime (order matters)
-TW_LOAD_VENDOR_MODULES := "smem.ko boot_mode.ko buildvariant.ko oplusboot.ko device_info.ko oplus_bsp_tp_notify.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko"
+TW_LOAD_VENDOR_MODULES := "smem.ko oplusboot.ko buildvariant.ko boot_mode.ko oplus_bsp_boot_projectinfo.ko oplus_charger_present.ko oplus_ftm_mode.ko panel_event_notifier.ko olc.ko device_info.ko oplus_bsp_tp_notify.ko oplus_bsp_fw_update.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_common.ko oplus_bsp_tp_focal_common.ko oplus_bsp_tp_ft3518.ko oplus_bsp_synaptics_tcm2.ko"
 
 # BOARD_VENDOR_KERNEL_MODULES_LOAD: loaded during first stage init
 BOARD_VENDOR_KERNEL_MODULES_LOAD := \
     smem.ko \
-    boot_mode.ko \
-    buildvariant.ko \
     oplusboot.ko \
+    buildvariant.ko \
+    boot_mode.ko \
+    oplus_bsp_boot_projectinfo.ko \
+    oplus_charger_present.ko \
+    oplus_ftm_mode.ko \
+    panel_event_notifier.ko \
+    olc.ko \
     device_info.ko \
     oplus_bsp_tp_notify.ko \
+    oplus_bsp_fw_update.ko \
     oplus_bsp_tp_custom.ko \
     oplus_bsp_tp_common.ko \
+    oplus_bsp_tp_focal_common.ko \
+    oplus_bsp_tp_ft3518.ko \
     oplus_bsp_synaptics_tcm2.ko
