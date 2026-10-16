@@ -65,6 +65,7 @@ jobs:
           BRANCH="${{ github.event.inputs.twrp_branch }}"
         fi
         echo "Using TWRP branch: $BRANCH"
+        echo "TWRP_BRANCH=$BRANCH" >> $GITHUB_ENV
 
         repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b $BRANCH
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
@@ -81,7 +82,12 @@ jobs:
         source build/envsetup.sh
 
         echo "=== Lunching Target ==="
-        lunch twrp_RMX5079-eng
+        BRANCH="${TWRP_BRANCH:-twrp-14}"
+        if [ "$BRANCH" = "twrp-14" ] || [ "$BRANCH" = "twrp-14.1" ]; then
+          lunch twrp_RMX5079-trunk_staging-eng || lunch omni_RMX5079-trunk_staging-eng
+        else
+          lunch twrp_RMX5079-eng || lunch omni_RMX5079-eng
+        fi
 
         echo "=== Pre-populating DTB image ==="
         mkdir -p out/target/product/RMX5079
