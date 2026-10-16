@@ -1,17 +1,12 @@
 on early-init
-    insmod /vendor/lib/modules/smem.ko
-    insmod /vendor/lib/modules/boot_mode.ko
-    insmod /vendor/lib/modules/buildvariant.ko
-    insmod /vendor/lib/modules/oplusboot.ko
-    insmod /vendor/lib/modules/device_info.ko
-    insmod /vendor/lib/modules/oplus_bsp_tp_notify.ko
-    insmod /vendor/lib/modules/oplus_bsp_tp_custom.ko
-    insmod /vendor/lib/modules/oplus_bsp_tp_common.ko
-    insmod /vendor/lib/modules/oplus_bsp_synaptics_tcm2.ko
+    # NOTE: /vendor is NOT mounted yet at early-init.
+    # Kernel modules are loaded later by TWRP via TW_LOAD_VENDOR_MODULES
+    # after vendor is mounted. Do NOT insmod from /vendor here.
 
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
     setprop sys.usb.configfs 1
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}

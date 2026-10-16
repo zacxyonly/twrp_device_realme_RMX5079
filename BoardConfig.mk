@@ -10,14 +10,14 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT := kryo300
 TARGET_CPU_VARIANT_RUNTIME := cortex-a76
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT := cortex-a55
 
 # Platform
 TARGET_BOARD_PLATFORM := volcano
@@ -34,9 +34,11 @@ BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_DTB_OFFSET := 0x01f00000
 
 BOARD_KERNEL_CMDLINE := video=vfb:640x400,bpp=32,memsize=3072000 log_buf_len=2M nosoftlockup bootconfig
+BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x984000
 BOARD_BOOTCONFIG := androidboot.hardware=qcom androidboot.memcg=1 androidboot.usbcontroller=a600000.dwc3 androidboot.load_modules_parallel=true
 
 # Prebuilt Kernel & DTB
+BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -105,6 +107,14 @@ TW_NO_SCREEN_TIMEOUT := true
 TW_NO_EXFAT_FUSE := true
 TW_HAS_MTP := true
 TW_DEFAULT_EXTERNAL_STORAGE := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LIBRESETPROP := true
+TW_SKIP_ADDITIONAL_RELINK := true
+TW_DEVICE_VERSION := 1
+
+# Logging
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
 
 # Brightness control
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
@@ -112,4 +122,17 @@ TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 1024
 
 # Vendor Kernel Modules
-TW_LOAD_VENDOR_MODULES := "oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_notify.ko device_info.ko boot_mode.ko smem.ko oplusboot.ko buildvariant.ko"
+# TW_LOAD_VENDOR_MODULES: loaded by TWRP at runtime (order matters)
+TW_LOAD_VENDOR_MODULES := "smem.ko boot_mode.ko buildvariant.ko oplusboot.ko device_info.ko oplus_bsp_tp_notify.ko oplus_bsp_tp_custom.ko oplus_bsp_tp_common.ko oplus_bsp_synaptics_tcm2.ko"
+
+# BOARD_VENDOR_KERNEL_MODULES_LOAD: loaded during first stage init
+BOARD_VENDOR_KERNEL_MODULES_LOAD := \
+    smem.ko \
+    boot_mode.ko \
+    buildvariant.ko \
+    oplusboot.ko \
+    device_info.ko \
+    oplus_bsp_tp_notify.ko \
+    oplus_bsp_tp_custom.ko \
+    oplus_bsp_tp_common.ko \
+    oplus_bsp_synaptics_tcm2.ko
