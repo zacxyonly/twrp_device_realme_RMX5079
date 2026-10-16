@@ -59,6 +59,9 @@ jobs:
         cd ~/twrp
         git config --global user.name "Builder"
         git config --global user.email "builder@github.com"
+        git config --global http.postBuffer 1048576000
+        git config --global http.lowSpeedLimit 1000
+        git config --global http.lowSpeedTime 60
 
         # Default ke twrp-12.1 (rekomendasi TWRP upstream untuk stabilitas & kompatibilitas kernel 6.x/boot v4)
         BRANCH="twrp-12.1"
@@ -68,8 +71,38 @@ jobs:
         echo "Using TWRP branch: $BRANCH"
         echo "TWRP_BRANCH=$BRANCH" >> $GITHUB_ENV
 
-        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b $BRANCH
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
+        repo init --depth=1 --no-repo-verify -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b $BRANCH
+
+        echo "=== Syncing TWRP Sources with Auto-Retry ==="
+        SYNC_SUCCESS=0
+        for ATTEMPT in 1 2 3 4 5; do
+          echo ">>> repo sync attempt $ATTEMPT of 5..."
+          if [ $ATTEMPT -eq 1 ]; then
+            JOBS=$(nproc --all)
+          elif [ $ATTEMPT -eq 2 ]; then
+            JOBS=4
+            sleep 15
+          elif [ $ATTEMPT -eq 3 ]; then
+            JOBS=2
+            sleep 30
+          else
+            JOBS=1
+            sleep 45
+          fi
+
+          if repo sync -c -j$JOBS --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune; then
+            echo ">>> repo sync succeeded on attempt $ATTEMPT!"
+            SYNC_SUCCESS=1
+            break
+          else
+            echo ">>> repo sync attempt $ATTEMPT failed, retrying..."
+          fi
+        done
+
+        if [ $SYNC_SUCCESS -ne 1 ]; then
+          echo "ERROR: repo sync failed after 5 attempts!"
+          exit 1
+        fi
 
     - name: Copy Device Tree to Manifest
       run: |
