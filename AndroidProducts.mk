@@ -11,13 +11,5 @@ COMMON_LUNCH_CHOICES := \
     twrp_RMX5079-eng \
     twrp_RMX5079-userdebug \
     omni_RMX5079-eng \
-    omni_RMX5079-userdebug \
-    twrp_RMX5079-ap2a-eng \
-    twrp_RMX5079-ap2a-userdebug \
-    omni_RMX5079-ap2a-eng \
-    omni_RMX5079-ap2a-userdebug \
-    twrp_RMX5079-trunk_staging-eng \
-    twrp_RMX5079-trunk_staging-userdebug \
-    omni_RMX5079-trunk_staging-eng \
-    omni_RMX5079-trunk_staging-userdebug
+    omni_RMX5079-userdebug
 
