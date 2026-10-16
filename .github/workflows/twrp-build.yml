@@ -153,11 +153,11 @@ jobs:
           Lihat file `sha256.txt` untuk memastikan keutuhan file hasil download.
 
           ---
-          ### 🚀 Panduan Flashing:
+          ### 🚀 Panduan Penggunaan (Booting):
+          > ⚠️ **PERINGATAN**: Gunakan perintah `fastboot boot` (JANGAN `fastboot flash`) untuk testing guna mencegah bootloop/softbrick!
           ```bash
           adb reboot bootloader
-          fastboot flash recovery recovery.img
-          fastboot reboot recovery
+          fastboot boot recovery.img
           ```
         files: |
           output/*
