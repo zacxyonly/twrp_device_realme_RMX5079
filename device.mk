@@ -5,6 +5,9 @@
 
 LOCAL_PATH := device/realme/RMX5079
 
+# Build standalone recovery image
+PRODUCT_BUILD_RECOVERY_IMAGE := true
+
 # Fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl-mock \
