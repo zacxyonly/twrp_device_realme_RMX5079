@@ -25,3 +25,6 @@ PRODUCT_PACKAGES += \
 
 # Recovery dependencies are handled automatically by TWRP build system
 # via TARGET_RECOVERY_FSTAB and device/realme/RMX5079/recovery/root
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/twrp.flags:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/twrp.flags
+
