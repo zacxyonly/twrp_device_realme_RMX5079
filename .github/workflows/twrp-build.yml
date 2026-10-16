@@ -87,6 +87,9 @@ jobs:
         cp -vf device/realme/RMX5079/prebuilt/dtb out/target/product/RMX5079/dtb.img || true
         cp -vf device/realme/RMX5079/prebuilt/dtb out/target/product/RMX5079/dtb || true
         
+        echo "=== Fixing rsync conflict in build/make/core/Makefile ==="
+        sed -i 's/rsync -a --exclude=sdcard/rsync -a --exclude=vendor --exclude=sdcard/g' build/make/core/Makefile
+        
         echo "=== Building Recovery Image ==="
         make recoveryimage -j$(nproc --all)
         
